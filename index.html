@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz: Aerodinâmica</title>
+<style>
+    /* === Nome do aluno e número === */
+    header {
+        text-align: center;
+        background-color: #1565c0;
+        color: white;
+        padding: 10px;
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    /* === Estilo geral === */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f6ff;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: #1565c0;
+    }
+
+    .alternativa {
+        margin: 8px 0;
+    }
+
+    button {
+        background-color: #1565c0;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: block;
+        margin: 20px auto;
+        font-size: 1rem;
+    }
+
+    button:hover {
+        background-color: #0d47a1;
+    }
+
+    #resultado {
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    Nome: John Batista — Nº 15
+</header>
+
+<div class="container">
+    <h1>Quiz: Aerodinâmica</h1>
+    <div id="pergunta"></div>
+    <div id="alternativas"></div>
+    <button onclick="enviarAvaliacao()">Responder</button>
+    <div id="resultado"></div>
+</div>
+
+<script>
+    // === Lista de perguntas sobre Aerodinâmica ===
+    const perguntas = [
+        {
+            enunciado: "O que é aerodinâmica?",
+            alternativas: [
+                { texto: "Estudo do movimento do ar e sua interação com objetos", correta: true },
+                { texto: "Estudo do clima e suas variações", correta: false },
+                { texto: "Estudo da gravidade e sua força", correta: false }
+            ]
+        },
+        {
+            enunciado: "Qual formato reduz mais o arrasto aerodinâmico?",
+            alternativas: [
+                { texto: "Formato pontiagudo e alongado", correta: true },
+                { texto: "Formato quadrado", correta: false },
+                { texto: "Formato totalmente plano", correta: false }
+            ]
+        },
+        {
+            enunciado: "O que é arrasto em aerodinâmica?",
+            alternativas: [
+                { texto: "Força que se opõe ao movimento no ar", correta: true },
+                { texto: "Força que empurra o objeto para frente", correta: false },
+                { texto: "Força que aumenta a gravidade", correta: false }
+            ]
+        },
+        {
+            enunciado: "O que é sustentação (lift) em aerodinâmica?",
+            alternativas: [
+                { texto: "Força que mantém um objeto no ar", correta: true },
+                { texto: "Força que freia o movimento no solo", correta: false },
+                { texto: "Força que aumenta o peso", correta: false }
+            ]
+        },
+        {
+            enunciado: "Em aviões, qual parte principal gera a sustentação?",
+            alternativas: [
+                { texto: "Asas", correta: true },
+                { texto: "Rodas", correta: false },
+                { texto: "Cauda", correta: false }
+            ]
+        }
+    ];
+
+    let indicePerguntaAtual = 0;
+    let pontuacao = 0;
+
+    // === Mostra a pergunta na tela ===
+    function mostraPergunta() {
+        const pergunta = perguntas[indicePerguntaAtual];
+        document.getElementById("pergunta").innerHTML = `<h2>${pergunta.enunciado}</h2>`;
+        mostraAlternativas(pergunta.alternativas);
+    }
+
+    // === Mostra as alternativas como botões radio ===
+    function mostraAlternativas(alternativas) {
+        const container = document.getElementById("alternativas");
+        container.innerHTML = "";
+        alternativas.forEach((alt, index) => {
+            container.innerHTML += `
+                <div class="alternativa">
+                    <label>
+                        <input type="radio" name="resposta" value="${index}">
+                        ${alt.texto}
+                    </label>
+                </div>
+            `;
+        });
+    }
+
+    // === Função para enviar a avaliação ===
+    function enviarAvaliacao() {
+        const respostaSelecionada = document.querySelector('input[name="resposta"]:checked');
+        if (!respostaSelecionada) {
+            alert("Por favor, selecione uma alternativa.");
+            return;
+        }
+
+        const indiceResposta = parseInt(respostaSelecionada.value);
+        if (perguntas[indicePerguntaAtual].alternativas[indiceResposta].correta) {
+            pontuacao++;
+        }
+
+        indicePerguntaAtual++;
+        if (indicePerguntaAtual < perguntas.length) {
+            mostraPergunta();
+        } else {
+            document.getElementById("pergunta").style.display = "none";
+            document.getElementById("alternativas").style.display = "none";
+            document.getElementById("resultado").innerHTML = 
+                `✈️ Você acertou ${pontuacao} de ${perguntas.length} questões!`;
+        }
+    }
+
+    // === Inicializa a primeira pergunta ===
+    mostraPergunta();
+</script>
+
+</body>
+</html>
